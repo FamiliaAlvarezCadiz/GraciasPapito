@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias Papito - Una Carta de Gratitud Médica</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        /* Corrección para el scroll del modal y visibilidad en cabecera */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Usar 100vh para asegurar que ocupe toda la altura de la ventana */
+            /* overflow-y: auto !important;  El scroll se manejará en .modal-content */
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 3000;
+            padding-top: 80px; /* Reducido a la mitad para subir el contenido */
+            align-items: flex-start; /* Asegura que el contenido empiece desde arriba */
+            justify-content: center;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de Seguridad Inicial -->
+    <div id="passwordBarrier">
+        <div class="password-form">
+            <h2>Acceso Privado</h2>
+            <p>Hola Papito, por favor ingresa la clave para ver tu regalo.</p>
+            <input type="password" id="passInput" class="password-input" placeholder="Escribe la contraseña aquí...">
+            <button class="btn-special" id="passBtn" style="width: 100%;">Entrar</button>
+            <p id="passError" class="password-error">Clave incorrecta. Inténtalo de nuevo, Papito.</p>
+        </div>
+    </div>
+
+    <!-- Contenedor de SVG para animaciones de fondo -->
+    <svg id="ekg-background" class="ekg-svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="ekgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#C5B358;stop-opacity:0" />
+                <stop offset="50%" style="stop-color:#C5B358;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#C5B358;stop-opacity:0" />
+            </linearGradient>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <polyline id="ekgLine" points="0,50 50,50 60,35 70,65 80,50 120,50 130,45 140,55 150,50 200,50 210,40 220,60 230,50 280,50 290,38 300,62 310,50 400,50" 
+                  fill="none" stroke="url(#ekgGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    </svg>
+
+    <!-- Contenedor de fondo con red neuronal animada -->
+    <div class="neural-network-bg">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
+    <!-- Barra de Navegación Principal -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>❤️ Gracias Papito</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <button class="nav-link" data-section="inicio">Inicio</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-section="presencia">Presencia</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-section="apoyo">Apoyo</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-section="valores">Valores</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal de Secciones -->
+    <main class="main-container">
+        
+        <!-- SECCIÓN: Inicio -->
+        <section id="inicio" class="content-section active">
+            <div class="section-content">
+                <h2>Bienvenido, Papito</h2>
+                <p class="intro-text">
+                    Tu legado no se mide solo en los años de vida que has vivido, sino en 
+                    el impacto que has dejado en quienes te rodean. Como médico, como padre, 
+                    como mentor: has sido el médico perfecto para cada uno de mis desafíos.
+                </p>
+                <p class="intro-text">
+                    Esta página es un reconocimiento digital a tu sabiduría, tu dedicación, 
+                    y tu capacidad de sanar—no solo cuerpos, sino almas. Te invito a explorar 
+                    cómo tus enseñanzas han codificado mi identidad.
+                </p>
+                <div class="cta-container">
+                    <button class="btn-special" id="diagnosticoBtn">Consultar Diagnóstico</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Tu Presencia -->
+        <section id="presencia" class="content-section">
+            <div class="section-content">
+                <h2>Tu Presencia</h2>
+                <p class="section-intro">
+                    Como el pulso que sostiene la vida, tu presencia es constante e insustituible.
+                </p>
+                <div class="gratitude-list">
+                    <div class="gratitude-item">
+                        <h3>🫀 El Pulso de Mi Vida</h3>
+                        <p>
+                            Tu simple presencia me recalibra. En los momentos caóticos, 
+                            eres el ritmo estable que me devuelve la paz. Tu manera de 
+                            poder calmarme con tus palabras (ademas de la mamita) me dan 
+                            lecciones de vida instantáneas.
+                        </p>
+                    </div>
+                    <div class="gratitude-item">
+                        <h3>💙 Diagnóstico Perfecto</h3>
+                        <p>
+                            Siempre supiste exactamente lo que necesitaba escuchar. Tu 
+                            intuición de médico, combinada con el amor de padre, te permitió 
+                            prescribir el remedio perfecto para cada momento de dolor.
+                        </p>
+                    </div>
+                    <div class="gratitude-item">
+                        <h3>🔬 Análisis Profundo</h3>
+                        <p>
+                            No solo veías lo que mostraba en la superficie; penetrabas hasta 
+                            el fondo de mis emociones. Tu capacidad de análisis me enseñó a 
+                            verme a mí mismo con claridad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Tu Apoyo -->
+        <section id="apoyo" class="content-section">
+            <div class="section-content">
+                <h2>Tu Apoyo</h2>
+                <p class="section-intro">
+                    Tu guía ha sido la brújula que me orienta en la oscuridad.
+                </p>
+                <div class="support-grid">
+                    <div class="support-card">
+                        <div class="support-icon">🧬</div>
+                        <h3>Codificador de Fortaleza</h3>
+                        <p>
+                            En tu ADN profesional llevas la determinación de quien salva vidas. 
+                            Esa misma fortaleza la transferiste a mí cuando más la necesitaba, 
+                            enseñándome que el desafío es solo una oportunidad disfrazada.
+                        </p>
+                    </div>
+                    <div class="support-card">
+                        <div class="support-icon">⚕️</div>
+                        <h3>Mi Médico Personal</h3>
+                        <p>
+                            No solo curas síntomas: curas duda, desesperanza, miedo. Tu 
+                            receta ha sido siempre la misma: amor, sabiduría, y confianza en mi.
+                        </p>
+                    </div>
+                    <div class="support-card">
+                        <div class="support-icon">💝</div>
+                        <h3>Guardia de mi Futuro</h3>
+                        <p>
+                            Tu apoyo incondicional en quiarme hacia el futuro mas brillante 
+                            que podria tener ha sido un alivio. Siempre te agradecere por eso. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Valores (Interactive Grid) -->
+        <section id="valores" class="content-section">
+            <div class="section-content">
+                <h2>Valores: Tu Herencia Científica y Humana</h2>
+                <p class="section-intro">
+                    Los valores que transmitiste son como las leyes de la física: 
+                    inmutables, precisas, y fundamentales para mi existencia.
+                </p>
+                <div class="valores-grid">
+                    <div class="valor-card">
+                        <div class="valor-pulse">
+                            <span class="pulse-icon">💓</span>
+                        </div>
+                        <h3>Persistencia</h3>
+                        <p class="valor-subtitle">Latir sin descanso</p>
+                        <p>
+                            Como un corazón que no cesa su trabajo, me enseñaste que la 
+                            persistencia es la fuerza que vence toda resistencia. En medicina 
+                            y en la vida: no te rindes.
+                        </p>
+                    </div>
+
+                    <div class="valor-card">
+                        <div class="valor-dna">
+                            <span class="dna-icon">🧬</span>
+                        </div>
+                        <h3>Fortaleza</h3>
+                        <p class="valor-subtitle">Codificada en tu ser</p>
+                        <p>
+                            Tu fortaleza no está en los músculos, sino en la capacidad de 
+                            enfrentar lo imposible sin quebrantarte. Es la fortaleza del 
+                            científico que nunca pierde la fe en que hay solución.
+                        </p>
+                    </div>
+
+                    <div class="valor-card">
+                        <div class="valor-chip">
+                            <span class="chip-icon">🔌</span>
+                        </div>
+                        <h3>Paciencia</h3>
+                        <p class="valor-subtitle">Circuito Esperante</p>
+                        <p>
+                           Siempre me recuerdas que la paciencia es la madre de todas las 
+                           ciencias: que, por muy ansioso o tenso que me sienta, siempre debo 
+                           esperar a lo que está por venir y considerar el costo de oportunidad 
+                           (aunque, a veces, no haya necesidad de hacerlo innecesariamente).
+                        </p>
+                    </div>
+
+                    <div class="valor-card">
+                        <div class="valor-microscope">
+                            <span class="microscope-icon">🔬</span>
+                        </div>
+                        <h3>Curiosidad</h3>
+                        <p class="valor-subtitle">La brújula del descubrimiento</p>
+                        <p>
+                            Tu curiosidad infinita es la que te llevó a perseguir la carrera de 
+                            medico y explorar la ciencia. Me inspiras a nunca conformarme, a 
+                            siempre preguntar: ¿cuál es la siguiente capa de la verdad? Y darle 
+                            prioridad al desarrollo del pensamiento crítico.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: Lecciones de Vida -->
+        <section id="lecciones" class="content-section">
+            <div class="section-content">
+                <h2>Lecciones de Vida</h2>
+                <p class="section-intro">
+                    Has sido mi maestro sin formal instrucción. A través de tu ejemplo, 
+                    he aprendido a ser la persona que hoy soy.
+                </p>
+                <div class="lessons-container">
+                    <div class="lesson-card">
+                        <h3>Persistencia</h3>
+                        <p class="lesson-title">Nunca Rendirse</p>
+                        <p>
+                            Me enseñaste que los obstáculos no son el fin del camino, 
+                            sino simplemente una curva. Con paciencia y determinación, 
+                            todo es posible. La persistencia es la herramienta que convierte 
+                            los sueños en realidad.
+                        </p>
+                    </div>
+                    <div class="lesson-card">
+                        <h3>Fortaleza</h3>
+                        <p class="lesson-title">Frente a la Adversidad</p>
+                        <p>
+                            Tu fuerza no proviene de no tener miedo, sino de enfrentar 
+                            el miedo y seguir adelante. Me enseñaste que la verdadera 
+                            fortaleza es la capacidad de levantarse cada vez que caemos.
+                        </p>
+                    </div>
+                    <div class="lesson-card">
+                        <h3>Independencia</h3>
+                        <p class="lesson-title">De Pie Por Mis Propios Medios</p>
+                        <p>
+                            Aunque me brindaste soporte, siempre tu y la mamita me urgieron a 
+                            ser independiente. Me mostraste que crecer significa aprender a 
+                            caminar por mi propio camino.
+                        </p>
+                    </div>
+                    <div class="lesson-card">
+                        <h3>Curiosidad</h3>
+                        <p class="lesson-title">El Aprendizaje Nunca Cesa</p>
+                        <p>
+                            Tu sed infinita de aprender me inspiró a nunca dejar de crecer. 
+                            Me enseñaste que cada día es una oportunidad para descubrir algo 
+                            nuevo, para cuestionarnos y mejorar constantemente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Diagnóstico de Gratitud -->
+    <div id="modalDiagnostico" class="modal">
+        <div class="modal-content modal-medical">
+            <span class="modal-close">&times;</span>
+            <div class="medical-header">
+                <h2>DIAGNÓSTICO: SÍNTOMAS DE GRATITUD</h2>
+                <p class="medical-subtitle">Informe Clínico del Corazón</p>
+            </div>
+            <div class="medical-report">
+                <p class="report-line">
+                    <strong>Paciente:</strong> Tu hijo amado
+                </p>
+                <p class="report-line">
+                    <strong>Condición:</strong> Corazón lleno de orgullo por ti
+                </p>
+                <p class="report-line">
+                    <strong>Síntomas Observados:</strong> Gratitud infinita, admiración sin límites, 
+                    amor incondicional, respeto profundo
+                </p>
+            </div>
+            <div class="medical-diagnosis">
+                <p>
+                    <strong>Diagnóstico Final:</strong>
+                </p>
+                <p class="diagnosis-text">
+                    Un corazón completamente sano, fortalecido por el ejemplo de un padre 
+                    que es médico, mentor, y guardián del amor. La ciencia explica cómo funciona 
+                    el cuerpo; tú enseñaste cómo amar. Gracias por recordarme que la medicina 
+                    y el amor viajan en el mismo pulso.
+                    Y gracias por priorizar lo que necesito en el futuro, y por darme las 
+                    herramientas que necesito, sin importar la situación.
+                </p>
+            </div>
+            <p class="modal-signature">
+                Con admiración y respeto,<br>
+                Tu hijo que siempre te amará ❤️
+            </p>
+        </div>
+    </div>
+
+    <!-- Script Principal -->
+    <script src="assets/script.js"></script>
+</body>
+</html>
